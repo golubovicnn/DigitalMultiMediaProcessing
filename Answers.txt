@@ -1,0 +1,55 @@
+------------------------------------------------
+Assignment 3 ­ Multimedia Information System
+------------------------------------------------
+
+Please answer the following questions in written form (1-2 A4 pages max.)
+
+-----------------------------------------------------------------
+Task 3.1: Integrate your components
+-----------------------------------------------------------------
+
+------------------------------------------------------------------------------
+Task 3.2: Add a tag-based search page
+------------------------------------------------------------------------------
+
+* What are the shortcomings of our very simple tagging approach?
+
+The Tags are very general and don’t go into the specific Details. The tags get generated automatically, so that they aren’t very meaningful. For example it is obvious that a picture is a picture. You can know that without our tags.
+
+* What can be said about relationships between tags?
+
+
+Each picture has a tag image and the file ending. This means that is can’t happen that a videofile has the fielding of a picture.
+The colourtags red,green, blue grey can only be carried from images, so there are no overlaps.
+
+
+* We used tags for simple "content typing". How can content typing in the sense we did it 
+  improve navigation and search in an information system?
+
+By clicking on the different tags, the navigation through the media libraray is quite easy. When you filter for images or you want to filter for “red-dominant” picture one can just click on the corresponding tag. But it would be good if one have a search field, where one can reach for different tags at the same time.
+
+----------------------------------------------------------
+Task 3.3: Metadata extraction 2
+----------------------------------------------------------
+
+* Discuss the advantages and limitations of your heuristics
+
+Because the algorithm is not very komplex so it is easy to understand. But problems are, that the algorithm only look for red, green and blue colours. Which means that it doesn’t recognise colours such as yellow. But because yellow isn’t anything else then a mixture of red, green and blue, it checks which of the values are the highest and then the decision is made which color it is (red,green or blue). The algorithm only works for RGB-Values, with other colour models it would not work, unless you convert the values. Furthermore it has problems recognising back and white Pixels, it can’t exactly say if a pixel if black/white. This was solved by recognising a color as grey when none of the 3 RBG values are dominant.
+
+* Discuss the advantages and limitations of our simple dominant color model
+
+The algorithm of the getDominantColor() is written quite simple. A disadvantage is that the produced tags don’t suit the perception of the picture itself. The picture can be tagged “blue” but the human would see it as rather green (e.g.)
+
+----------------------------------------------------------
+Task 3.4: Expose your data in Graph Dracula
+----------------------------------------------------------
+
+* What (type of) layout algorithm do we use for the information visualization in this assignment?
+
+We use a Force-directed drawing algorithm. This algorithm make sure that all the nodes are positioned in a way that the edges have the same length and there are as little intersections as possible. 
+
+* What are advantages/disadvantages of the used library?
+
+JavaScript Library works in every browser and has a easy usability. It is possible to 
+add nodes/edges and to output them. Thats how we made a clear model with all relationships of the generated media and connected the tags with the elements.
+A disadvantage is that when there are many relations (that correspond with each other) the model becomes very confusing.

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/commons-cli.jar"/>
+	<classpathentry kind="lib" path="lib/jl1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jmf.jar"/>
+	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="lib/logback-classic.jar"/>
+	<classpathentry kind="lib" path="lib/logback-core.jar"/>
+	<classpathentry kind="lib" path="lib/mp3spi1.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/prefuse.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
+	<classpathentry kind="lib" path="lib/tritonus_aos-0.3.6.jar"/>
+	<classpathentry kind="lib" path="lib/tritonus_dsp-0.3.6.jar"/>
+	<classpathentry kind="lib" path="lib/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="lib/vorbisspi1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/xuggle-xuggler-test.jar"/>
+	<classpathentry kind="lib" path="lib/xuggle-xuggler.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

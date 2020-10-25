@@ -1,0 +1,309 @@
+<project name="2017_ITM_UE" default="build" basedir=".">
+	<description>
+    ITM build file
+	</description>
+
+	<!-- set global properties for this build -->
+	<property name="src" location="java" />
+	<property name="build" location="build" />
+	<property name="doc" location="doc" />
+	<property name="lib" location="lib" />
+	<property name="thumbDir" location="thumbnails" />
+	<property name="thumbDirWebapp" location="webapps/itm/media/md" />
+	<property name="buildWebapp" location="webapps/itm/WEB-INF/classes" />
+	<property name="libWebapp" location="webapps/itm/WEB-INF/lib" />
+	<!-- <property name="prefuseJarWebapp" location="webapps/itm/infovis" /> -->
+	<property name="xugglerNativeLibs" location="path-to-xuggle-lib-directory" />
+
+
+	<!-- class path variable -->
+	<path id="project.class.path">
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement path="${java.class.path}" />
+	</path>
+
+
+	<!--
+    Initialization of build.
+    -->
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+	</target>
+
+	<!--
+    Compiles the source tree
+    -->
+	<target name="compile" depends="init" description="compile the source">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}">
+			<classpath refid="project.class.path" />
+		</javac>
+	</target>
+
+
+	<!--
+    Creates the javadoc
+    -->
+	<target name="javadoc" depends="init" description="creates the javadoc">
+		<mkdir dir="${doc}" />
+		<!-- create the javadoc from ${src} into ${doc} -->
+		<javadoc sourcepath="${src}" destdir="${doc}" author="true" version="true" use="true" windowtitle="ITM API" linksource="yes">
+			<doctitle>
+				<![CDATA[<h1>ITM UE 2017 API</h1>]]></doctitle>
+		<bottom>
+			<![CDATA[<i>&#169; University of Vienna 2017. All Rights Reserved.</i>]]></bottom>
+</javadoc>
+</target>
+
+<!-- 
+        cleans the thumbnail directories 
+    -->
+<target name="clean-thumbs" description="clean all generated thumbnails and metadata">
+<echo>Deleting thumbnail directory ${thumbDir} and ${thumbDirWebapp} if existing</echo>
+<delete quiet="true">
+	<fileset dir="${thumbDir}" />
+	<fileset dir="${thumbDirWebapp}" />
+</delete>
+</target>
+
+<!-- 
+        cleans the ${build} directory 
+    -->
+<target name="clean-build" description="clean build directories">
+<echo>Deleting build directory ${build} and ${buildWebapp} if existing</echo>
+<delete dir="${build}" quiet="true" />
+<delete dir="${buildWebapp}" quiet="true" />
+</target>
+
+<!-- 
+        cleans the thumbnail and ${build} directory 
+    -->
+<target name="clean" depends="clean-thumbs, clean-build" description="complete clean up" />
+
+
+<!--
+        *****************************************************************
+        ***************** Assignment 1 **********************************
+        *****************************************************************
+-->
+
+<!--
+	    ImageMetadataGenerator
+	-->
+<target name="ImageMetadataGenerator" depends="compile" description="test the ImageMetadataGenerator: example: ant.bat ImageMetadataGenerator -Dinput=media/img/ -Doutput=test/">
+<!-- set default values for properties / overwrite via commandline! -->
+<property name="input" location="../media/img/" />
+<property name="output" location="result/" />
+
+<mkdir dir="${output}" />
+<java classname="itm.image.ImageMetadataGenerator">
+	<arg value="${input}" />
+	<arg value="${output}" />
+	<classpath>
+		<path refid="project.class.path" />
+		<pathelement path="${build}" />
+	</classpath>
+</java>
+</target>
+
+<!--
+	    ImageThumbnailGenerator
+	-->
+<target name="ImageThumbnailGenerator" depends="compile" description="test the ImageThumbnailGenerator: example: ant.bat ImageThumbnailGenerator -Dinput=media/img/ -Doutput=test/ -Drotation=90">
+    <!-- set default values for properties / overwrite via commandline! -->
+    <property name="input" location="media/img/" />
+    <property name="output" location="test/" />
+    <property name="rotation" location="90" />
+    
+    <mkdir dir="${output}" />
+    <java classname="itm.image.ImageThumbnailGenerator">
+        <arg value="${input}" />
+        <arg value="${output}" />
+        <arg value="${rotation}" />
+        <classpath>
+            <path refid="project.class.path" />
+            <pathelement path="${build}" />
+        </classpath>
+    </java>
+</target>
+
+<!--
+	    ImageHistogramGenerator
+    -->
+<target name="ImageHistogramGenerator" depends="compile" description="test the ImageHistogramGenerator: example: ant.bat ImageHistogramGenerator -Dinput=media/img/ -Doutput=test/ -Dbins=256">
+<!-- set default values for properties / overwrite via commandline! -->
+<property name="input" location="../media/img/" />
+<property name="output" location="result/" />
+<property name="bins" value="256" />
+
+<mkdir dir="${output}" />
+<java classname="itm.image.ImageHistogramGenerator">
+	<arg value="${input}" />
+	<arg value="${output}" />
+	<arg value="${bins}" />
+	<classpath>
+		<path refid="project.class.path" />
+		<pathelement path="${build}" />
+	</classpath>
+</java>
+</target>
+
+<!--
+        *****************************************************************
+        ***************** Assignment 2 **********************************
+        *****************************************************************
+-->
+
+<!--
+        create thumbnails from audio files
+-->
+<target name="AudioThumbGenerator" depends="compile" description="test the audio thumbnail generator. Example: ant.bat AudioThumbGenerator -Dinput=media/audio/ -Doutput=test/ -Dlength=10">
+<!-- set default values for properties / overwrite via commandline! -->
+<property name="input" location="../media/audio/" />
+<property name="output" location="result/" />
+<property name="length" location="10" />
+
+<mkdir dir="${output}" />
+<java classname="itm.audio.AudioThumbGenerator">
+	<arg value="${input}" />
+	<arg value="${output}" />
+	<arg value="${length}" />
+	<classpath>
+		<path refid="project.class.path" />
+		<pathelement path="${build}" />
+	</classpath>
+</java>
+</target>
+
+<!--
+        extract metadata from audio file(s)
+-->
+<target name="AudioMetadataGenerator" depends="compile" description="test the audio metadata generator. Example: ant.bat AudioMetadataGenerator -Dinput=media/audio/ -Doutput=test/">
+<!-- set default values for properties / overwrite via commandline! -->
+<property name="input" location="../media/audio/" />
+<property name="output" location="result/" />
+
+<mkdir dir="${output}" />
+<java classname="itm.audio.AudioMetadataGenerator">
+	<arg value="${input}" />
+	<arg value="${output}" />
+	<classpath>
+		<path refid="project.class.path" />
+		<pathelement path="${build}" />
+	</classpath>
+</java>
+</target>
+
+
+
+<!--
+        play an audio file
+-->
+<target name="AudioPlayer" depends="compile" description="play an audio file. Example: ant.bat AudioPlayer -Dinput=media/audio/mySong.mp3">
+<!-- set default values for properties / overwrite via commandline! -->
+<property name="input" location="../media/audio/Amazon.mp3" />
+
+<java classname="itm.audio.AudioPlayer">
+	<arg value="${input}" />
+	<classpath>
+		<path refid="project.class.path" />
+		<pathelement path="${build}" />
+	</classpath>
+</java>
+</target>
+
+
+
+<!--
+        extract thumbnail from video file(s)
+-->
+<target name="VideoFrameGrabber" depends="compile" description="test the video thumbnail generator. Example: ant.bat VideoFrameGrabber -Dinput=media/video/ -Doutput=test/">
+<!-- set default values for properties / overwrite via commandline! -->
+<property name="input" location="../media/video/" />
+<property name="output" location="result/" />
+
+<java classname="itm.video.VideoFrameGrabber">
+	<arg value="${input}" />
+	<arg value="${output}" />
+	<sysproperty key="ld_library_path" value="${xugglerNativeLibs}"/>
+	<classpath>
+		<path refid="project.class.path" />
+		<pathelement path="${build}" />
+	</classpath>
+</java>
+</target>
+
+
+<!--
+        extract metadata from video file(s)
+-->
+<target name="VideoMetadataGenerator" depends="compile" description="test the video metadata generator. Example: ant.bat VideoMetadataGenerator -Dinput=media/video/ -Doutput=test/">
+<!-- set default values for properties / overwrite via commandline! -->
+<property name="input" location="../media/video/" />
+<property name="output" location="result/" />
+
+<java classname="itm.video.VideoMetadataGenerator">
+	<arg value="${input}" />
+	<arg value="${output}" />
+    <sysproperty key="ld_library_path" value="${xugglerNativeLibs}"/>
+	<classpath>
+		<path refid="project.class.path" />
+		<pathelement path="${build}" />
+	</classpath>
+</java>
+</target>
+
+
+<!--
+        create video thumbnail
+-->
+<target name="VideoThumbnailGenerator" depends="compile" description="test the video thumb generator. Example: ant.bat VideoThumbnailGenerator -Dinput=media/video/panda.avi -Doutput=test/ -Dtimespan=2">
+    <!-- set default values for properties / overwrite via commandline! -->
+    <property name="input" location="/media/video/panda.avi" />
+    <property name="output" location="test/" />
+    
+    <java classname="itm.video.VideoThumbnailGenerator" fork="true">
+        <arg value="${input}" />
+        <arg value="${output}" />
+        <arg value="${timespan}" />
+        <sysproperty key="ld_library_path" value="${xugglerNativeLibs}"/>
+        <classpath>
+            <path refid="project.class.path" />
+            <pathelement path="${build}" />
+        </classpath>
+    </java>
+</target>
+
+
+<!--
+        *****************************************************************
+        ***************** Assignment 3 **********************************
+        *****************************************************************
+-->
+<target name="build" depends="clean,compile" description="Build the webapp">
+<mkdir dir="${libWebapp}" />
+<!-- <mkdir dir="${prefuseJarWebapp}" /> -->
+
+
+<!-- jar classes from build dir to webapp dir -->
+<jar destfile="${libWebapp}/itm.jar" basedir="${build}" />
+
+<!-- copy libs from lib dir to webapp dir -->
+<copy todir="${libWebapp}">
+	<fileset dir="${lib}" />
+</copy>
+
+<!-- copy prefuse jars to webapp dir -->
+<!--
+<copy todir="${prefuseJarWebapp}" file="${lib}/prefuse.jar" />
+<copy todir="${prefuseJarWebapp}" file="${libWebapp}/itm.jar" />
+-->
+</target>
+
+
+</project>
